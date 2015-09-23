@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<div id="signonBox" class="modal hide">
+	<div class="modal-header">
+		<button data-dismiss="modal" class="close" type="button">&times;</button>
+		<h3>登录</h3>
+	</div>
+	<div class="modal-body">
+		<div class="container">
+			<form class="form-signin">
+				用户名: <input type="text" class="input-block-level"
+					placeholder="请输入用户名" name="user.loginName"> 密码: <input
+					type="password" class="input-block-level" placeholder="请输入密码"
+					name="user.loginPassword">
+			</form>
+		</div>
+		<div id="errorMessage" class="alert alert-error"></div>
+	</div>
+	<div class="modal-footer">
+		<a data-dismiss="modal" id="loginButton" class="btn btn-primary"
+			href="javascript:void(0);">登录</a> <a data-dismiss="modal"
+			id="loginCancelButton" class="btn cancelButton"
+			href="javascript:void(0);">取消</a>
+	</div>
+</div>
+
+<div id="registerBox" class="modal hide">
+	<div class="modal-header">
+		<button data-dismiss="modal" class="close" type="button">&times;</button>
+		<h3>添加用户</h3>
+	</div>
+	<div class="modal-body">
+		<div class="container">
+			<form class="form-register">
+				用户名: <input type="text" class="input-block-level"
+					placeholder="请输入用户名" name="user.loginName" id="registerName">
+				密码: <input type="password" class="input-block-level"
+					placeholder="请输入密码" name="user.loginPassword" id="registerPassword">
+				确认密码: <input type="password" class="input-block-level"
+					placeholder="请再次输入密码" id="registerPasswordConfirm"> 昵称: <input
+					type="text" class="input-block-level" placeholder="请输入昵称"
+					name="user.userName" id="registerUserName">
+			</form>
+		</div>
+		<div id="errorMessageRegister" class="alert alert-error displaynone"></div>
+		<div id="okMessageRegister" class="alert alert-success displaynone"></div>
+	</div>
+	<div class="modal-footer">
+		<a data-dismiss="modal" id="registerLoginButton"
+			class="btn btn-primary" href="javascript:void(0);">添加</a> <a
+			data-dismiss="modal" id="registerLoginCancelButton" class="btn"
+			href="#">取消</a>
+	</div>
+</div>
+
+<div id="searchResultDialog" class="modal hide">
+	<div class="modal-header">
+		<button data-dismiss="modal" class="close" type="button">&times;</button>
+		<h3>搜索结果</h3>
+	</div>
+	<div class="modal-body">
+		<span id="searchResultNum"></span>
+	</div>
+</div>
+
+<div id="deleteDialog" class="modal hide">
+	<div class="modal-header">
+		<button data-dismiss="modal" class="close" type="button">&times;</button>
+		<h3>提示</h3>
+	</div>
+	<div class="modal-body">
+		<span>是否删除此标注？</span>
+	</div>
+	<div class="modal-footer">
+		<a data-dismiss="modal" id="deleteButton" class="btn btn-primary"
+			href="javascript:void(0);">删除</a> <a data-dismiss="modal"
+			id="deleteCancelButton" class="btn" href="#">取消</a>
+	</div>
+</div>
+
+<div id="signonConfirmDialog" class="modal hide">
+	<div class="modal-header">
+		<button data-dismiss="modal" class="close" type="button">&times;</button>
+		<h3>提示</h3>
+	</div>
+	<div class="modal-body">
+		<span>未登录，不可标记</span>
+	</div>
+	<div class="modal-footer">
+		<a data-dismiss="modal" id="signonConfirmButton"
+			class="btn btn-primary" href="javascript:void(0);"
+			onclick="signon('signonConfirmDialog');">登录</a> <a
+			data-dismiss="modal" id="signonConfirmCancelButton" class="btn"
+			href="javascript:void(0);">取消</a>
+	</div>
+</div>
+
+<a tabindex="-1" href="#signonConfirmDialog" data-toggle="modal"
+	id="signonConfirmA" class="hide">登录</a>
+
+<div id="updateUserDialog" class="modal hide">
+	<div class="modal-header">
+		<button data-dismiss="modal" class="close" type="button">&times;</button>
+		<h3>用户信息修改</h3>
+	</div>
+	<div class="modal-body" id="updateUserProfile"></div>
+	<div class="modal-footer">
+		<a data-dismiss="modal" id="updateButton" class="btn btn-primary"
+			href="javascript:void(0);">修改</a> <a data-dismiss="modal"
+			id="updateCancelButton" class="btn" href="#">取消</a>
+	</div>
+</div>
+</html>

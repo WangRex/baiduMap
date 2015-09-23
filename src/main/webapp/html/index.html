@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>百度地图</title>
+<link href="/baiduMap/bootstrap/css/bootstrap.min.css" rel="stylesheet"
+	media="screen">
+<link href="/baiduMap/bootstrap/css/bootstrap-responsive.min.css"
+	rel="stylesheet" media="screen">
+<link href="/baiduMap/assets/styles.css" rel="stylesheet" media="screen">
+<link href="/baiduMap/assets/DT_bootstrap.css" rel="stylesheet"
+	media="screen">
+<link href="/baiduMap/css/jquery-ui.css" type="text/css"
+	rel="stylesheet">
+<link href="/baiduMap/css/jquery-ui.theme.css" type="text/css"
+	rel="stylesheet">
+<link href="/baiduMap/css/base.css" rel="stylesheet" type="text/css" />
+<link href="/baiduMap/css/mapView.css" rel="stylesheet" type="text/css" />
+<link href="/baiduMap/css/styles.css" type="text/css" rel="stylesheet">
+<link rel="stylesheet"
+	href="/baiduMap/bootstrap/css/bootstrap-toggle-buttons.css" />
+<script type="text/javascript" src="/baiduMap/js/jquery-1.8.2.min.js"></script>
+<script type="text/javascript"
+	src="http://api.map.baidu.com/api?v=1.5&amp;ak=nPV86y2id566ksdhCcUO4aWA"></script>
+<script type="text/javascript" src="/baiduMap/js/underscore-min.js"></script>
+<script type="text/javascript" src="/baiduMap/js/backbone-min.js"></script>
+<script type="text/javascript" src="/baiduMap/js/backbone.marionette.js"></script>
+<script type="text/javascript"
+	src="/baiduMap/js/jquery.toggle.buttons.js"></script>
+<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+<!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+</head>
+<body>
+	<div class="navbar navbar-fixed-top">
+		<div class="navbar-inner">
+			<div class="container-fluid">
+				<a class="btn btn-navbar" data-toggle="collapse"
+					data-target=".nav-collapse"> <span class="icon-bar"></span> <span
+					class="icon-bar"></span> <span class="icon-bar"></span>
+				</a> <a class="brand" href="javascript:void(0);">百度地图</a>
+				<div class="nav-collapse collapse">
+					<ul class="nav pull-right">
+						<li class="dropdown"><a href="#" role="button"
+							class="dropdown-toggle" data-toggle="dropdown"> <i
+								class="icon-user"></i><span id="userName">访客</span><i
+								class="caret"></i>
+						</a>
+							<ul class="dropdown-menu">
+								<li class="postSignon"><a tabindex="-1"
+									id="myProfileButton" href="javascript:void(0);">我的信息</a></li>
+								<li class="hide"><a tabindex="-1" id="regButton"
+									href="#registerBox" data-toggle="modal">注册</a></li>
+								<li class="preSignon"><a tabindex="-1" href="#signonBox"
+									data-toggle="modal" id="signonButton">登录</a></li>
+								<li class="postSignon"><a tabindex="-1" id="logoutButton"
+									href="javascript:void(0);">登出</a></li>
+							</ul></li>
+					</ul>
+					<ul class="nav">
+						<li class="active"><a href="javascript:void(0);"
+							id="homePage">首页</a></li>
+						<li class="postSignon0"><a href="javascript:void(0);"
+							id="userManage">用户管理</a></li>
+					</ul>
+				</div>
+				<!--/.nav-collapse -->
+			</div>
+		</div>
+	</div>
+	<div class="container-fluid" id="mainContentMap">
+		<div class="row-fluid">
+			<div class="span12" id="content">
+				<!-- <div id="searchInMap">
+					<label for="searchCity">请输入城市:</label>
+					<input type="text" id="searchCity" class="span2" placeholder="请输入城市"/>
+					<label for="searchKeyWords">请输入关键字:</label>
+					<input type="text" id="searchKeyWords" class="span2" placeholder="请输入关键字"/>
+					<label><a href="#searchResultDialog" data-toggle="modal" id="searchButton" class="btn" style="margin-top: -11px;">搜索</a></label>
+				</div> -->
+				<div id="container"></div>
+			</div>
+		</div>
+		<div class="row-fluid">
+			<div class="span12" id="sidebar">
+				<!-- block -->
+				<div class="block displaynone" id="markerManage">
+					<div class="navbar navbar-inner block-header">
+						<div class="muted pull-left">标注管理</div>
+					</div>
+					<div class="block-content collapse in">
+						<div class="span12" id="markerTableDiv"></div>
+					</div>
+				</div>
+				<!-- /block -->
+			</div>
+			<!--/span-->
+		</div>
+		<hr>
+		<footer>
+			<p>&copy; Rex 2015</p>
+		</footer>
+	</div>
+
+	<div class="infoBox">
+		<img src="/baiduMap/images/close.gif" id="closeButton" align="right"
+			style="position: absolute; right: 0px; cursor: pointer; margin: 10px 10px 0 0">
+		<h3 class="infoBoxTitle">
+			<span class="pad10">标注信息</span>
+		</h3>
+		<form id="infoBoxForm" method="post"
+			action="/baiduMap/marker/addMarker">
+			<input type="hidden" name="marker.inputName" id="markerInputName" />
+			<input type="hidden" name="marker.updateName" id="markerUpdateName" />
+			<input type="hidden" name="marker.markerId" id="markerId" />
+			<div class="proList">
+				<a href="javascript:void(0);" id="markericon"
+					style="position: absolute; margin-left: -6px; margin-top: -3px">
+					<img src="/baiduMap/images/pointMarker.png">
+				</a>
+				<table class="tabicon" id="basicTag">
+					<tbody>
+						<tr>
+							<td><span class="red">*</span>名称:</td>
+							<td><input type="text" id="markerName"
+								name="marker.markerName" value="test"></td>
+						</tr>
+						<tr>
+							<td>类别:</td>
+							<td>
+								<div class="BoardPicker left" id="BoardPicker1"
+									style="display: block;">
+									<div class="current" onclick="showTypeDiv(1);">
+										<span class="CurrentBoard">--</span> <span class="DownArrow"></span>
+									</div>
+									<div class="BoardList" id="BoardList1">
+										<div class="wrapper">
+											<ul>
+											</ul>
+										</div>
+										<div class="CreateBoard">
+											<input type="text" id="boardname1" value=""
+												placeholder="创建新类别">
+											<button type="button" id="createboard1"
+												class="Button WhiteButton Button18">创建</button>
+										</div>
+									</div>
+
+								</div>
+
+								<div class="BoardPicker left" id="BoardPicker2"
+									style="display: block;">
+									<div class="current" onclick="showTypeDiv(2);">
+										<span class="CurrentBoard">--</span> <span class="DownArrow"></span>
+									</div>
+									<div class="BoardList" id="BoardList2">
+										<div class="wrapper">
+											<ul>
+											</ul>
+										</div>
+										<div class="CreateBoard">
+											<input type="text" id="boardname2" value=""
+												placeholder="创建新类别">
+											<button type="button" id="createboard2"
+												class="Button WhiteButton Button18">创建</button>
+										</div>
+									</div>
+								</div> <input type="hidden" id="markerType" class="gray"
+								name="marker.markerType" value="--,--">
+							</td>
+						</tr>
+						<tr>
+							<td><span class="red">*</span>经纬度:</td>
+							<td><input type="text" name="marker.markerLnglat"
+								id="lng_lat" value=""></td>
+						</tr>
+						<tr>
+							<td>地址:</td>
+							<td><input type="text" name="marker.markerAddress"
+								id="address" value=""></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</form>
+		<p class="lackMsg">
+			<span class="red" id="lackMsg"></span>
+		</p>
+		<div class="handler clear">
+			<button id="saveMarker">保存</button>
+			<button id="delMarker">删除</button>
+			<button id="cancelMarker">取消</button>
+		</div>
+		<div id="styleMarker" style="width: 1px; height: 1px"></div>
+		<div class="infoDir" id="infoDir" style="top: 242px; left: 120px;"></div>
+	</div>
+
+	<div id="signonBox" class="modal hide">
+		<div class="modal-header">
+			<button data-dismiss="modal" class="close" type="button">&times;</button>
+			<h3>登录</h3>
+		</div>
+		<div class="modal-body">
+			<div class="container">
+				<form class="form-signin">
+					用户名: <input type="text" class="input-block-level"
+						placeholder="请输入用户名" name="user.loginName"> 密码: <input
+						type="password" class="input-block-level" placeholder="请输入密码"
+						name="user.loginPassword">
+				</form>
+			</div>
+			<div id="errorMessage" class="alert alert-error"></div>
+		</div>
+		<div class="modal-footer">
+			<a data-dismiss="modal" id="loginButton" class="btn btn-primary"
+				href="javascript:void(0);">登录</a> <a data-dismiss="modal"
+				id="loginCancelButton" class="btn cancelButton"
+				href="javascript:void(0);">取消</a>
+		</div>
+	</div>
+
+	<div id="registerBox" class="modal hide">
+		<div class="modal-header">
+			<button data-dismiss="modal" class="close" type="button">&times;</button>
+			<h3>添加用户</h3>
+		</div>
+		<div class="modal-body">
+			<div class="container">
+				<form class="form-register">
+					用户名: <input type="text" class="input-block-level"
+						placeholder="请输入用户名" name="user.loginName" id="registerName">
+					密码: <input type="password" class="input-block-level"
+						placeholder="请输入密码" name="user.loginPassword"
+						id="registerPassword"> 确认密码: <input type="password"
+						class="input-block-level" placeholder="请再次输入密码"
+						id="registerPasswordConfirm"> 昵称: <input type="text"
+						class="input-block-level" placeholder="请输入昵称" name="user.userName"
+						id="registerUserName">
+				</form>
+			</div>
+			<div id="errorMessageRegister" class="alert alert-error displaynone"></div>
+			<div id="okMessageRegister" class="alert alert-success displaynone"></div>
+		</div>
+		<div class="modal-footer">
+			<a data-dismiss="modal" id="registerLoginButton"
+				class="btn btn-primary" href="javascript:void(0);">添加</a> <a
+				data-dismiss="modal" id="registerLoginCancelButton" class="btn"
+				href="#">取消</a>
+		</div>
+	</div>
+
+	<div id="searchResultDialog" class="modal hide">
+		<div class="modal-header">
+			<button data-dismiss="modal" class="close" type="button">&times;</button>
+			<h3>搜索结果</h3>
+		</div>
+		<div class="modal-body">
+			<span id="searchResultNum"></span>
+		</div>
+	</div>
+
+	<div id="deleteDialog" class="modal hide">
+		<div class="modal-header">
+			<button data-dismiss="modal" class="close" type="button">&times;</button>
+			<h3>提示</h3>
+		</div>
+		<div class="modal-body">
+			<span>是否删除此标注？</span>
+		</div>
+		<div class="modal-footer">
+			<a data-dismiss="modal" id="deleteButton" class="btn btn-primary"
+				href="javascript:void(0);">删除</a> <a data-dismiss="modal"
+				id="deleteCancelButton" class="btn" href="#">取消</a>
+		</div>
+	</div>
+
+	<div id="signonConfirmDialog" class="modal hide">
+		<div class="modal-header">
+			<button data-dismiss="modal" class="close" type="button">&times;</button>
+			<h3>提示</h3>
+		</div>
+		<div class="modal-body">
+			<span>未登录，不可标记</span>
+		</div>
+		<div class="modal-footer">
+			<a data-dismiss="modal" id="signonConfirmButton"
+				class="btn btn-primary" href="javascript:void(0);">关闭</a>
+		</div>
+	</div>
+
+	<div id="notAbleToMarkDialog" class="modal hide">
+		<div class="modal-header">
+			<button data-dismiss="modal" class="close" type="button">&times;</button>
+			<h3>提示</h3>
+		</div>
+		<div class="modal-body">
+			<span>对不起，您没有标记权限。</span>
+		</div>
+		<div class="modal-footer">
+			<a data-dismiss="modal" id="notAbleToMarkCancelButton" class="btn"
+				href="javascript:void(0);">关闭</a>
+		</div>
+	</div>
+
+	<!-- 弹出层按钮 -->
+	<a tabindex="-1" href="#signonConfirmDialog" data-toggle="modal"
+		id="signonConfirmA" class="hide">登录</a>
+	<a tabindex="-1" href="#addUserDialog" data-toggle="modal"
+		id="addUserHideA" class="hide">添加用户</a>
+	<a href="#updateUserDialog" id="updateUserHidden" data-toggle="modal"
+		class="displaynone"></a>
+	<a tabindex="-1" href="#notAbleToMarkDialog" data-toggle="modal"
+		id="notAbleToMarkA" class="hide">提示</a>
+	<!-- 弹出层按钮 -->
+
+	<div id="updateUserDialog" class="modal hide">
+		<div class="modal-header">
+			<button data-dismiss="modal" class="close" type="button">&times;</button>
+			<h3>用户信息修改</h3>
+		</div>
+		<div class="modal-body" id="updateUserProfile">
+			<div class="container">
+				<form class="form-UpdateUser">
+					用户名: <input type="text" class="input-block-level"
+						placeholder="请输入用户名" name="user.loginName" id="updateUserName">
+					密码: <input type="password" class="input-block-level"
+						placeholder="请输入密码" name="user.loginPassword"
+						id="updateUserPassword"> 确认密码: <input type="password"
+						class="input-block-level" placeholder="请再次输入密码"
+						id="updateUserPasswordConfirm"> 昵称: <input type="text"
+						class="input-block-level" placeholder="请输入昵称" name="user.userName"
+						id="updateUserNickName">
+				</form>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<a data-dismiss="modal" id="updateButton" class="btn btn-primary"
+				href="javascript:void(0);">修改</a> <a data-dismiss="modal"
+				id="updateCancelButton" class="btn" href="#">取消</a>
+		</div>
+	</div>
+
+	<div id="addUserDialog" class="modal hide addUserModal">
+		<div class="modal-header">
+			<button data-dismiss="modal" class="close" type="button">&times;</button>
+			<h3>用户添加</h3>
+		</div>
+		<div class="modal-body" id="addUserProfile">
+			<div class="containerAddUser">
+				<form class="form-addUser">
+					用户名: <input type="text" class="input-block-level"
+						placeholder="请输入用户名" name="user.loginName" id="addUserName">
+					密码: <input type="password" class="input-block-level"
+						placeholder="请输入密码" name="user.loginPassword" id="addUserPassword">
+					确认密码: <input type="password" class="input-block-level"
+						placeholder="请再次输入密码" id="addUserPasswordConfirm"> 昵称: <input
+						type="text" class="input-block-level" placeholder="请输入昵称"
+						name="user.userName" id="addUserNickName">
+					<div class="control-group">
+						<label class="control-label">是否可标记</label>
+						<div class="controls">
+							<div id="text-toggle-button">
+								<input type="checkbox" checked="checked" name="user.markerFlag"
+									value="0">
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<a data-dismiss="modal" id="addUserButton" class="btn btn-primary"
+				href="javascript:void(0);">添加</a> <a data-dismiss="modal"
+				id="addUserCancelButton" class="btn" href="#">取消</a>
+		</div>
+	</div>
+
+	<div class="container-fluid displaynone" id="mainContent">
+		<div class="row-fluid">
+			<!--span4-->
+			<div class="span12" id="sidebar">
+				<!-- block -->
+				<div class="block">
+					<div class="navbar navbar-inner block-header">
+						<div class="muted pull-left" id="mainContentTitle">我的信息</div>
+					</div>
+					<div class="block-content collapse in">
+						<div class="span12" id="myProfileContent"></div>
+					</div>
+				</div>
+				<!-- /block -->
+			</div>
+			<!--/span-->
+		</div>
+		<hr>
+		<footer>
+			<p>&copy; Rex 2015</p>
+		</footer>
+	</div>
+	<script type="text/javascript">
+		var map = new BMap.Map("container", {
+			enableMapClick : false
+		});
+		map.enableScrollWheelZoom();
+		map.enableContinuousZoom();
+		map.centerAndZoom("沈阳市", 12);
+
+	    $('#text-toggle-button').toggleButtons({
+	        width: 220,
+	        label: {
+	            enabled: "是",
+	            disabled: "否"
+	        }
+	    });
+
+	</script>
+	<script id="table-template-marker" type="text/backbone">
+		<table class="table table-striped table-bordered table-nowrap" id="example">
+			<thead>
+				<tr>
+					<th style="width:20%">名称</th>
+					<th style="width:25%">类别</th>
+					<th style="width:35%">地址</th>
+					<th style="width:20%">操作</th>
+				</tr>
+			</thead>
+			<tbody></tbody>
+		</table>
+	</script>
+	<script id="tr-template-marker" type="text/backbone">
+	<td title="<%=markerName%>"><%=markerName%></td>
+	<td title="<%=markerType%>"><%=markerType%></td>
+	<td title="<%=markerAddress%>"><%=markerAddress%></td>
+		<td class="center">
+			<a href="#" class="view">查看</a>
+			<a href="#deleteDialog" class="delete" data-toggle="modal">删除</a>
+		</td>
+	</script>
+	<script id="div-template-myProfile" type="text/backbone">
+	<div class="userItem">
+		<div class="span3">
+			登录名：
+		</div>
+		<div id="user-login-name" class="span9">
+			<%=loginName%>
+		</div>
+	</div>
+	<div class="userItem">
+		<div class="span3">
+			角色：
+		</div>
+		<div id="user-role" class="span9">
+			<%=roleName%>
+		</div>
+	</div>
+	<div class="userItem">
+		<div class="span3">
+			用户名：
+		</div>
+		<div id="user-user-name" class="span9">
+			<%=userName%>
+		</div>
+	</div>
+	<div class="userItem">
+		<div class="span3">
+			可标记：
+		</div>
+		<div id="user-mark-flag" class="span9">
+			<%=markerFlagName%>
+		</div>
+	</div>
+</script>
+	<script id="table-template-user" type="text/backbone">
+		<table class="table table-striped table-bordered table-nowrap" id="userTable">
+			<thead>
+				<tr>
+					<th>登录名</th>
+					<th>用户名</th>
+					<th>角色</th>
+					<th>状态</th>
+					<th>可标记</th>
+					<th>操作<a href='javascript:void(0);' class="addUserBtn" title='增加用户' onclick='addUser();'><img src='images/ButtonAdd.png'/></a></th>
+				</tr>
+			</thead>
+			<tbody></tbody>
+		</table>
+</script>
+	<script id="tr-template-user" type="text/backbone">
+	<td><%=loginName%></td>
+	<td><%=userName%></td>
+	<td><%=roleName%></td>
+	<td><%=statusName%></td>
+	<td><%=markerFlagName%></td>
+	<td class="center">
+		<a href="javascript:void(0);" class="updateUser">修改</a>
+		<a href="#" id="delete" data-toggle="modal">删除</a>
+	</td>
+</script>
+
+	<script id="form-template-updUserProfile" type="text/backbone">
+	<form id="updUserProfileForm">
+		<input type="hidden" name="user.id" value="<%=id%>"/>
+		<div class="userItem">
+			<div class="span3">
+				登录名：
+			</div>
+			<div id="user-login-name" class="span9">
+				<input type="text" name="user.loginName" value="<%=loginName%>"/>
+			</div>
+		</div>
+		<div class="userItem">
+			<div class="span3">
+				角色：
+			</div>
+			<div id="user-role" class="span9">
+				<input type="hidden" name="user.role" value="<%=role%>"/>
+				<input type="text" name="roleName" value="<%=roleName%>"/>
+			</div>
+		</div>
+		<div class="userItem">
+			<div class="span3">
+				用户名：
+			</div>
+			<div id="user-user-name" class="span9">
+				<input type="text" name="user.userName" value="<%=userName%>"/>
+			</div>
+		</div>
+		<div class="userItem">
+			<div class="span3">
+				是否可标记：
+			</div>
+			<div id="user-mark-flag" class="span9">
+				<input type="hidden" name="user.markerFlag" value="<%=markerFlag%>" id="updateUserMarkerFlag"/>
+				<div class="control-group">
+                	<div class="controls">
+                    	<div id="update-text-toggle-button">
+                       	<input type="checkbox" checked="checked" name="user.markerFlag" value="0">
+                    	</div>
+                	</div>
+            	</div>
+			</div>
+		</div>
+	</form>
+</script>
+
+	<script type="text/javascript"
+		src="/baiduMap/bootstrap/js/bootstrap.min.js"></script>
+	<script type="text/javascript"
+		src="/baiduMap/vendors/datatables/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" src="/baiduMap/assets/DT_bootstrap.js"></script>
+	<script type="text/javascript"
+		src="/baiduMap/vendors/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+	<script type="text/javascript" src="/baiduMap/js/login.js"></script>
+	<script type="text/javascript" src="/baiduMap/js/loadTableTemplate.js"></script>
+	<script type="text/javascript" src="/baiduMap/js/util/ValueUtil.js"></script>
+	<script type="text/javascript" src="/baiduMap/js/baiduMap.js"></script>
+</body>
+</html>

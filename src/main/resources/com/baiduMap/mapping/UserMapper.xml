@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baiduMap.IDao.IUserMapper" >
+  <resultMap id="BaseResultMap" type="com.baiduMap.pojo.User" >
+    <id column="ID" property="id" jdbcType="DECIMAL" />
+    <result column="LOGIN_NAME" property="loginName" jdbcType="VARCHAR" />
+    <result column="LOGIN_PASSWORD" property="loginPassword" jdbcType="VARCHAR" />
+    <result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+    <result column="TOKEN" property="token" jdbcType="VARCHAR" />
+    <result column="ROLE" property="role" jdbcType="VARCHAR" />
+    <result column="ROLE_NAME" property="roleName" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="STATUS_NAME" property="statusName" jdbcType="VARCHAR" />
+    <result column="MARKER_FLAG" property="markerFlag" jdbcType="VARCHAR" />
+    <result column="MARKER_FLAG_NAME" property="markerFlagName" jdbcType="VARCHAR" />
+    <result column="INPUT_NAME" property="inputName" jdbcType="VARCHAR" />
+    <result column="INPUT_DATE" property="inputDate" jdbcType="VARCHAR" />
+    <result column="UPDATE_NAME" property="updateName" jdbcType="VARCHAR" />
+    <result column="UPDATE_DATE" property="updateDate" jdbcType="VARCHAR" />
+    <result column="DELSIGN" property="delsign" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, LOGIN_NAME, LOGIN_PASSWORD, USER_NAME, ROLE, TOKEN, STATUS, MARKER_FLAG, INPUT_NAME, 
+    INPUT_DATE, UPDATE_NAME, UPDATE_DATE, DELSIGN
+  </sql>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />,
+    case ROLE when '0' then '系统管理员'
+    		when '1' then '会员'
+    		when '2' then '普通用户'
+    end as ROLE_NAME,
+    case STATUS when '0' then '激活'
+    		when '1' then '未激活'
+    end as STATUS_NAME,
+    case MARKER_FLAG when '0' then '可标注'
+    		when '1' then '不可标注'
+    end as MARKER_FLAG_NAME
+    from BDM_USER_T
+    where DELSIGN = 0 and 
+    <![CDATA[
+    	ID != 1
+	]]>
+    
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />,
+    case ROLE when '0' then '系统管理员'
+    		when '1' then '会员'
+    		when '2' then '普通用户'
+    end as ROLE_NAME,
+    case STATUS when '0' then '激活'
+    		when '1' then '未激活'
+    end as STATUS_NAME,
+    case MARKER_FLAG when '0' then '可标注'
+    		when '1' then '不可标注'
+    end as MARKER_FLAG_NAME
+    from BDM_USER_T
+    where ID = #{id,jdbcType=DECIMAL} and DELSIGN = 0
+  </select>
+  <select id="selectByConditions" resultMap="BaseResultMap" parameterType="com.baiduMap.pojo.User" >
+    select 
+    <include refid="Base_Column_List" />,
+    case ROLE when '0' then '系统管理员'
+    		when '1' then '会员'
+    		when '2' then '普通用户'
+    end as ROLE_NAME,
+    case STATUS when '0' then '激活'
+    		when '1' then '未激活'
+    end as STATUS_NAME,
+    case MARKER_FLAG when '0' then '可标注'
+    		when '1' then '不可标注'
+    end as MARKER_FLAG_NAME
+    from BDM_USER_T
+    where DELSIGN = 0
+    <if test="id != null">
+	    AND ID = #{id,jdbcType=DECIMAL} 
+  	</if>
+    <if test="loginName != null">
+	    AND LOGIN_NAME = #{loginName,jdbcType=VARCHAR} 
+  	</if>
+    <if test="loginPassword != null">
+	    AND LOGIN_PASSWORD = #{loginPassword,jdbcType=VARCHAR} 
+  	</if>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from BDM_USER_T
+    where ID = #{id,jdbcType=DECIMAL}
+  </delete>
+  <insert id="insert" parameterType="com.baiduMap.pojo.User" >
+    insert into BDM_USER_T (ID, LOGIN_NAME, LOGIN_PASSWORD, 
+      USER_NAME, ROLE, TOKEN, STATUS, 
+      MARKER_FLAG, INPUT_NAME, INPUT_DATE, 
+      UPDATE_NAME, UPDATE_DATE, DELSIGN
+      )
+    values (#{id,jdbcType=DECIMAL}, #{loginName,jdbcType=VARCHAR}, #{loginPassword,jdbcType=VARCHAR}, 
+      #{userName,jdbcType=VARCHAR}, 2, #{token,jdbcType=VARCHAR}, 0, 
+      #{markerFlag,jdbcType=VARCHAR}, #{inputName,jdbcType=VARCHAR}, now(), 
+      #{updateName,jdbcType=VARCHAR}, #{updateDate,jdbcType=VARCHAR}, 0
+      )
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.baiduMap.pojo.User">
+    update BDM_USER_T
+    <set >
+      <if test="loginName != null" >
+        LOGIN_NAME = #{loginName,jdbcType=VARCHAR},
+      </if>
+      <if test="loginPassword != null" >
+        LOGIN_PASSWORD = #{loginPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        USER_NAME = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="role != null" >
+        ROLE = #{role,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="markerFlag != null" >
+        MARKER_FLAG = #{markerFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="updateName != null" >
+        UPDATE_NAME = #{updateName,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null" >
+        UPDATE_DATE = now(),
+      </if>
+    </set>
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.baiduMap.pojo.User" >
+    update BDM_USER_T
+    set LOGIN_NAME = #{loginName,jdbcType=VARCHAR},
+      LOGIN_PASSWORD = #{loginPassword,jdbcType=VARCHAR},
+      USER_NAME = #{userName,jdbcType=VARCHAR},
+      ROLE = #{role,jdbcType=VARCHAR},
+      TOKEN = #{token,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=VARCHAR},
+      MARKER_FLAG = #{markerFlag,jdbcType=VARCHAR},
+      INPUT_NAME = #{inputName,jdbcType=VARCHAR},
+      INPUT_DATE = #{inputDate,jdbcType=VARCHAR},
+      UPDATE_NAME = #{updateName,jdbcType=VARCHAR},
+      UPDATE_DATE = #{updateDate,jdbcType=VARCHAR},
+      DELSIGN = #{delsign,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+  <update id="updateTokenByPrimaryKey" parameterType="com.baiduMap.pojo.User" >
+    update BDM_USER_T
+    set TOKEN = #{token,jdbcType=VARCHAR},
+      UPDATE_NAME = #{updateName,jdbcType=VARCHAR},
+      UPDATE_DATE = now()
+    where ID = #{id,jdbcType=DECIMAL} and DELSIGN = 0
+  </update>
+</mapper>

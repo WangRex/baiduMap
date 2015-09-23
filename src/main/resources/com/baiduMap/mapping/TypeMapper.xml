@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baiduMap.IDao.ITypeMapper" >
+  <resultMap id="BaseResultMap" type="com.baiduMap.pojo.Type" >
+    <id column="TYPE_ID" property="typeId" jdbcType="DECIMAL" />
+    <result column="TYPE_NAME" property="typeName" jdbcType="VARCHAR" />
+    <result column="TYPE_LEVEL" property="typeLevel" jdbcType="VARCHAR" />
+    <result column="TYPE_PARENT_ID" property="typeParentId" jdbcType="VARCHAR" />
+    <result column="INPUT_NAME" property="inputName" jdbcType="VARCHAR" />
+    <result column="INPUT_DATE" property="inputDate" jdbcType="VARCHAR" />
+    <result column="UPDATE_NAME" property="updateName" jdbcType="VARCHAR" />
+    <result column="UPDATE_DATE" property="updateDate" jdbcType="VARCHAR" />
+    <result column="DELSIGN" property="delsign" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    TYPE_ID, TYPE_NAME, TYPE_LEVEL, TYPE_PARENT_ID, INPUT_NAME, INPUT_DATE, UPDATE_NAME, 
+    UPDATE_DATE, DELSIGN
+  </sql>
+  <select id="selectByIdOrLevel" resultMap="BaseResultMap" parameterType="com.baiduMap.pojo.Type" >
+    select 
+    <include refid="Base_Column_List" />
+    from BDM_TYPE_T
+    where DELSIGN=0 
+    <if test="typeParentId != null" >
+       and TYPE_PARENT_ID = #{typeParentId,jdbcType=VARCHAR}
+    </if>
+    <if test="typeLevel != null" >
+    	and TYPE_LEVEL = #{typeLevel,jdbcType=VARCHAR}
+    </if>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from BDM_TYPE_T
+    where TYPE_ID = #{typeId,jdbcType=DECIMAL}
+  </delete>
+  <insert id="insert" parameterType="com.baiduMap.pojo.Type" >
+    insert into BDM_TYPE_T (TYPE_ID, TYPE_NAME, TYPE_LEVEL, 
+      TYPE_PARENT_ID, INPUT_NAME, INPUT_DATE, 
+      UPDATE_NAME, UPDATE_DATE, DELSIGN
+      )
+    values (#{typeId,jdbcType=DECIMAL}, #{typeName,jdbcType=VARCHAR}, #{typeLevel,jdbcType=VARCHAR}, 
+      #{typeParentId,jdbcType=VARCHAR}, #{inputName,jdbcType=VARCHAR}, now(), 
+      #{updateName,jdbcType=VARCHAR}, #{updateDate,jdbcType=VARCHAR}, 0
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.baiduMap.pojo.Type" >
+    insert into BDM_TYPE_T
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="typeId != null" >
+        TYPE_ID,
+      </if>
+      <if test="typeName != null" >
+        TYPE_NAME,
+      </if>
+      <if test="typeLevel != null" >
+        TYPE_LEVEL,
+      </if>
+      <if test="typeParentId != null" >
+        TYPE_PARENT_ID,
+      </if>
+      <if test="inputName != null" >
+        INPUT_NAME,
+      </if>
+      <if test="inputDate != null" >
+        INPUT_DATE,
+      </if>
+      <if test="updateName != null" >
+        UPDATE_NAME,
+      </if>
+      <if test="updateDate != null" >
+        UPDATE_DATE,
+      </if>
+      <if test="delsign != null" >
+        DELSIGN,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="typeId != null" >
+        #{typeId,jdbcType=DECIMAL},
+      </if>
+      <if test="typeName != null" >
+        #{typeName,jdbcType=VARCHAR},
+      </if>
+      <if test="typeLevel != null" >
+        #{typeLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="typeParentId != null" >
+        #{typeParentId,jdbcType=VARCHAR},
+      </if>
+      <if test="inputName != null" >
+        #{inputName,jdbcType=VARCHAR},
+      </if>
+      <if test="inputDate != null" >
+        #{inputDate,jdbcType=VARCHAR},
+      </if>
+      <if test="updateName != null" >
+        #{updateName,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=VARCHAR},
+      </if>
+      <if test="delsign != null" >
+        #{delsign,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.baiduMap.pojo.Type" >
+    update BDM_TYPE_T
+    <set >
+      <if test="typeName != null" >
+        TYPE_NAME = #{typeName,jdbcType=VARCHAR},
+      </if>
+      <if test="typeLevel != null" >
+        TYPE_LEVEL = #{typeLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="typeParentId != null" >
+        TYPE_PARENT_ID = #{typeParentId,jdbcType=VARCHAR},
+      </if>
+      <if test="inputName != null" >
+        INPUT_NAME = #{inputName,jdbcType=VARCHAR},
+      </if>
+      <if test="inputDate != null" >
+        INPUT_DATE = #{inputDate,jdbcType=VARCHAR},
+      </if>
+      <if test="updateName != null" >
+        UPDATE_NAME = #{updateName,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null" >
+        UPDATE_DATE = #{updateDate,jdbcType=VARCHAR},
+      </if>
+      <if test="delsign != null" >
+        DELSIGN = #{delsign,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where TYPE_ID = #{typeId,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.baiduMap.pojo.Type" >
+    update BDM_TYPE_T
+    set TYPE_NAME = #{typeName,jdbcType=VARCHAR},
+      TYPE_LEVEL = #{typeLevel,jdbcType=VARCHAR},
+      TYPE_PARENT_ID = #{typeParentId,jdbcType=VARCHAR},
+      INPUT_NAME = #{inputName,jdbcType=VARCHAR},
+      INPUT_DATE = #{inputDate,jdbcType=VARCHAR},
+      UPDATE_NAME = #{updateName,jdbcType=VARCHAR},
+      UPDATE_DATE = #{updateDate,jdbcType=VARCHAR},
+      DELSIGN = #{delsign,jdbcType=VARCHAR}
+    where TYPE_ID = #{typeId,jdbcType=DECIMAL}
+  </update>
+</mapper>

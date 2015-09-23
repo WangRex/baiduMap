@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baiduMap.IDao.IMarkerMapper" >
+  <resultMap id="BaseResultMap" type="com.baiduMap.pojo.Marker" >
+    <id column="MARKER_ID" property="markerId" jdbcType="DECIMAL" />
+    <result column="MARKER_NAME" property="markerName" jdbcType="VARCHAR" />
+    <result column="MARKER_TYPE" property="markerType" jdbcType="VARCHAR" />
+    <result column="MARKER_LNGLAT" property="markerLnglat" jdbcType="VARCHAR" />
+    <result column="MARKER_ADDRESS" property="markerAddress" jdbcType="VARCHAR" />
+    <result column="INPUT_NAME" property="inputName" jdbcType="VARCHAR" />
+    <result column="INPUT_DATE" property="inputDate" jdbcType="VARCHAR" />
+    <result column="UPDATE_NAME" property="updateName" jdbcType="VARCHAR" />
+    <result column="UPDATE_DATE" property="updateDate" jdbcType="VARCHAR" />
+    <result column="DELSIGN" property="delsign" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    MARKER_ID, MARKER_NAME, MARKER_TYPE, MARKER_LNGLAT, MARKER_ADDRESS, INPUT_NAME, 
+    INPUT_DATE, UPDATE_NAME, UPDATE_DATE, DELSIGN
+  </sql>
+  <select id="selectAll" resultMap="BaseResultMap" parameterType="com.baiduMap.pojo.Marker" >
+    select 
+    <include refid="Base_Column_List" />
+    from BDM_MARKER_T
+    where DELSIGN = 0
+    AND INPUT_NAME = #{inputName,jdbcType=VARCHAR} 
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from BDM_MARKER_T
+    where MARKER_ID = #{markerId,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    update BDM_MARKER_T
+    set DELSIGN = 1
+    where MARKER_ID = #{markerId,jdbcType=DECIMAL}
+  </delete>
+  <insert id="insert" parameterType="com.baiduMap.pojo.Marker" >
+    insert into BDM_MARKER_T (MARKER_ID, MARKER_NAME, 
+      MARKER_TYPE, MARKER_LNGLAT, MARKER_ADDRESS, 
+      INPUT_NAME, INPUT_DATE, UPDATE_NAME, 
+      UPDATE_DATE, DELSIGN)
+    values (#{markerId,jdbcType=DECIMAL}, #{markerName,jdbcType=VARCHAR}, 
+      #{markerType,jdbcType=VARCHAR}, #{markerLnglat,jdbcType=VARCHAR}, #{markerAddress,jdbcType=VARCHAR}, 
+      #{inputName,jdbcType=VARCHAR}, now(), #{updateName,jdbcType=VARCHAR}, 
+      #{updateDate,jdbcType=VARCHAR}, 0)
+  </insert>
+  <insert id="insertSelective" parameterType="com.baiduMap.pojo.Marker" >
+    insert into BDM_MARKER_T
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="markerId != null" >
+        MARKER_ID,
+      </if>
+      <if test="markerName != null" >
+        MARKER_NAME,
+      </if>
+      <if test="markerType != null" >
+        MARKER_TYPE,
+      </if>
+      <if test="markerLnglat != null" >
+        MARKER_LNGLAT,
+      </if>
+      <if test="markerAddress != null" >
+        MARKER_ADDRESS,
+      </if>
+      <if test="inputName != null" >
+        INPUT_NAME,
+      </if>
+      <if test="inputDate != null" >
+        INPUT_DATE,
+      </if>
+      <if test="updateName != null" >
+        UPDATE_NAME,
+      </if>
+      <if test="updateDate != null" >
+        UPDATE_DATE,
+      </if>
+      <if test="delsign != null" >
+        DELSIGN,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="markerId != null" >
+        #{markerId,jdbcType=DECIMAL},
+      </if>
+      <if test="markerName != null" >
+        #{markerName,jdbcType=VARCHAR},
+      </if>
+      <if test="markerType != null" >
+        #{markerType,jdbcType=VARCHAR},
+      </if>
+      <if test="markerLnglat != null" >
+        #{markerLnglat,jdbcType=VARCHAR},
+      </if>
+      <if test="markerAddress != null" >
+        #{markerAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="inputName != null" >
+        #{inputName,jdbcType=VARCHAR},
+      </if>
+      <if test="inputDate != null" >
+        #{inputDate,jdbcType=VARCHAR},
+      </if>
+      <if test="updateName != null" >
+        #{updateName,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=VARCHAR},
+      </if>
+      <if test="delsign != null" >
+        #{delsign,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.baiduMap.pojo.Marker" >
+    update BDM_MARKER_T
+    <set >
+      <if test="markerName != null" >
+        MARKER_NAME = #{markerName,jdbcType=VARCHAR},
+      </if>
+      <if test="markerType != null" >
+        MARKER_TYPE = #{markerType,jdbcType=VARCHAR},
+      </if>
+      <if test="markerLnglat != null" >
+        MARKER_LNGLAT = #{markerLnglat,jdbcType=VARCHAR},
+      </if>
+      <if test="markerAddress != null" >
+        MARKER_ADDRESS = #{markerAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="inputName != null" >
+        INPUT_NAME = #{inputName,jdbcType=VARCHAR},
+      </if>
+      <if test="inputDate != null" >
+        INPUT_DATE = #{inputDate,jdbcType=VARCHAR},
+      </if>
+      <if test="updateName != null" >
+        UPDATE_NAME = #{updateName,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null" >
+        UPDATE_DATE = #{updateDate,jdbcType=VARCHAR},
+      </if>
+      <if test="delsign != null" >
+        DELSIGN = #{delsign,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where MARKER_ID = #{markerId,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.baiduMap.pojo.Marker" >
+    update BDM_MARKER_T
+    set MARKER_NAME = #{markerName,jdbcType=VARCHAR},
+      MARKER_TYPE = #{markerType,jdbcType=VARCHAR},
+      MARKER_LNGLAT = #{markerLnglat,jdbcType=VARCHAR},
+      MARKER_ADDRESS = #{markerAddress,jdbcType=VARCHAR},
+      UPDATE_NAME = #{updateName,jdbcType=VARCHAR},
+      UPDATE_DATE = now()
+    where MARKER_ID = #{markerId,jdbcType=DECIMAL}
+  </update>
+</mapper>
