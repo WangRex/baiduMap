@@ -28,7 +28,7 @@ public class TypeController {
     }
 	
 	@ResponseBody
-	@RequestMapping(value = "/getTypeList", method = RequestMethod.GET)
+	@RequestMapping(value = "/getTypeList", method = RequestMethod.POST)
 	public List<Type> getTypeList(@RequestParam(value = "type_level", required = true) String type_level
 			) {
 		
@@ -44,7 +44,7 @@ public class TypeController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/getList", method = RequestMethod.GET)
+	@RequestMapping(value = "/getList", method = RequestMethod.POST)
 	public List<Type> getList(@RequestParam(value = "typeParentId", required = true) String typeParentId,
 			@RequestParam(value = "type_level", required = true) String type_level
 			) {
@@ -62,7 +62,7 @@ public class TypeController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/addType", method = RequestMethod.GET)
+	@RequestMapping(value = "/addType", method = RequestMethod.POST)
 	public void addType(@RequestParam(value = "type_name", required = true) String type_name,
 			@RequestParam(value = "type_level", required = true) String type_level,
 			@RequestParam(value = "type_parent_id", required = true) String type_parent_id) {

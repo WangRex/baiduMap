@@ -42,7 +42,7 @@ public class MarkerController {
 		}
 	}
 	@ResponseBody
-	@RequestMapping(value = "/getMarker", method = RequestMethod.GET)
+	@RequestMapping(value = "/getMarker", method = RequestMethod.POST)
 	public Marker selectByPrimaryKey(@ModelAttribute Marker marker) {
 		
 		try {
@@ -57,7 +57,7 @@ public class MarkerController {
 		}
 	}
 	@ResponseBody
-	@RequestMapping(value = "/updMarker", method = RequestMethod.GET)
+	@RequestMapping(value = "/updMarker", method = RequestMethod.POST)
 	public Marker updateByPrimaryKey(@ModelAttribute Marker marker) {
 		
 		try {
@@ -69,7 +69,7 @@ public class MarkerController {
 		}
 	}
 	@ResponseBody
-	@RequestMapping(value = "/addMarker", method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
+	@RequestMapping(value = "/addMarker", method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
 	public Marker addMarker( @ModelAttribute Marker marker, HttpServletRequest request) {
 		
 		try {
@@ -93,7 +93,7 @@ public class MarkerController {
 		}
 	}
 	@ResponseBody
-	@RequestMapping(value = "/delMarker", method = RequestMethod.GET)
+	@RequestMapping(value = "/delMarker", method = RequestMethod.POST)
 	public void delIssues( @ModelAttribute Marker marker) {
 		
 		try {

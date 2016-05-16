@@ -30,7 +30,7 @@ public class LoginController {
             binder.setFieldDefaultPrefix("user.");    
     } 
 	@ResponseBody
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public User login(
 			HttpSession session,
 			HttpServletResponse response,
@@ -53,7 +53,7 @@ public class LoginController {
 		}
 	} 
 	@ResponseBody
-	@RequestMapping(value = "/getUser", method = RequestMethod.GET)
+	@RequestMapping(value = "/getUser", method = RequestMethod.POST)
 	public User getUser(@ModelAttribute User user) {
 		try {
 			user = loginService.selectByConditions(user);
@@ -64,7 +64,7 @@ public class LoginController {
 		}
 	} 
 	@ResponseBody
-	@RequestMapping(value = "/getSession", method = RequestMethod.GET)
+	@RequestMapping(value = "/getSession", method = RequestMethod.POST)
 	public User getUserSession(
 			HttpSession session,
 			@ModelAttribute User user) {
@@ -77,7 +77,7 @@ public class LoginController {
 		}
 	}
 	@ResponseBody
-	@RequestMapping(value = "/removeUserSession", method = RequestMethod.GET)
+	@RequestMapping(value = "/removeUserSession", method = RequestMethod.POST)
 	public void removeUserSession(
 			HttpSession session,
 			@ModelAttribute User user) {
@@ -90,7 +90,7 @@ public class LoginController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/addUserToken", method = RequestMethod.GET)
+	@RequestMapping(value = "/addUserToken", method = RequestMethod.POST)
 	public void addUserToken(User user) {
 		try {
 			loginService.updateTokenByPrimaryKey(user);
@@ -100,7 +100,7 @@ public class LoginController {
 	}  
 
 	@ResponseBody
-	@RequestMapping(value = "/addUser", method = RequestMethod.GET)
+	@RequestMapping(value = "/addUser", method = RequestMethod.POST)
 	public User addUser(
 			HttpSession session,
 			@ModelAttribute User user) {

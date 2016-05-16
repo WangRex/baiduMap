@@ -75,7 +75,7 @@ $(document).ready(function() {
 									var param = $("form#infoBoxForm").serialize();
 									if($("#userName").data("id") != undefined && $("#userName").data("id") != 0) {
 										$.ajax({
-											type : "get",
+											type : "post",
 											url : "/baiduMap/marker/addMarker",
 											cache : false,
 											data : param,
@@ -176,7 +176,7 @@ function initInfoBoxDivButton() {
 
 function initUserStatus() {
 	$.ajax({
-		type : "get",
+		type : "post",
 		url : "/baiduMap/login/getSession",
 		cache : false,
 		dataType : "json"
@@ -193,7 +193,7 @@ function initUserStatus() {
 				$(".postSignon").show();
 				form[0].reset();
 				refreshMarkerTable($("#userName").data("id"));
-//				initMarkers($("#userName").data("id"));
+				initMarkers($("#userName").data("id"));
 			}
 		}
 	}).error(function() {
@@ -218,7 +218,7 @@ function repositionInfoBoxDiv() {
 
 function refillInfoBoxDiv(markerId,infoBoxDiv) {
 	$.ajax({
-		type : "get",
+		type : "post",
 		url : "/baiduMap/marker/getMarker",
 		cache : false,
 		data : {"marker.markerId" : markerId},
@@ -306,7 +306,7 @@ function initMarkers(inputName) {
 							infoBoxDiv.find("#updateName").val(inputName == undefined ? "0" : inputName);
 							var param = $("form#infoBoxForm").serialize();
 							$.ajax({
-								type : "get",
+								type : "post",
 								url : "/baiduMap/marker/updMarker",
 								cache : false,
 								data : param
@@ -320,7 +320,7 @@ function initMarkers(inputName) {
 							var param = {"marker.markerId":markerId,"marker.inputName":inputName};
 							$("#delete").click();
 							$.ajax({
-								type : "get",
+								type : "post",
 								url : "/baiduMap/marker/delMarker",
 								cache : false,
 								data : param
@@ -408,7 +408,7 @@ function initBoardList(num) {
 	var BoardListUl = $("#BoardList" + num).find("ul");
 	BoardListUl.html("");
 	$.ajax({
-		type : "get",
+		type : "post",
 		url : "/baiduMap/type/getList",
 		cache : false,
 		data : param,
@@ -468,7 +468,7 @@ function initCreateButton() {
 			}
 			if(typename != null && typename != "") {
 				$.ajax({
-					type : "get",
+					type : "post",
 					url : "/baiduMap/type/addType",
 					cache : false,
 					data : param
@@ -498,7 +498,7 @@ function initUserManage() {
 	$("#userManage").on("click", function() {
 		var param = {};
 		$.ajax({
-			type : "get",
+			type : "post",
 			url : "/baiduMap/user/getUserList",
 			cache : false,
 			data : param,
@@ -514,14 +514,14 @@ function initUserManage() {
 	$("#updateButton").on("click", function() {
 		var param = $("#updUserProfileForm").serialize();
 		$.ajax({
-			type : "get",
+			type : "post",
 			url : "/baiduMap/user/updUser",
 			cache : false,
 			data : param
 		}).done(function() {
 			var param = {};
 			$.ajax({
-				type : "get",
+				type : "post",
 				url : "/baiduMap/user/getUserList",
 				cache : false,
 				data : param,
@@ -540,7 +540,7 @@ function initUserManage() {
 function getMarker(markerId) {
 	var param = {"marker.markerId":markerId};
 	$.ajax({
-		type : "get",
+		type : "post",
 		url : "/baiduMap/marker/getMarker",
 		cache : false,
 		data : param,
@@ -567,7 +567,7 @@ function initUpdUserProfile(id) {
 	
 	var param = {"user.id":id};
 	$.ajax({
-		type : "get",
+		type : "post",
 		url : "/baiduMap/user/getUser",
 		cache : false,
 		data : param,

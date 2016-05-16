@@ -5,7 +5,7 @@ $(document).ready(function() {
 		e.preventDefault();
 		e.stopPropagation();
 		$.ajax({
-			type : "get",
+			type : "post",
 			url : "/baiduMap/login/login",
 			data : form.serialize(),
 			cache : false,
@@ -32,7 +32,7 @@ $(document).ready(function() {
 	});
 	$("#logoutButton").click(function() {
 		$.ajax({
-			type : "get",
+			type : "post",
 			url : "/baiduMap/login/removeUserSession",
 			data : form.serialize(),
 			cache : false
@@ -52,7 +52,7 @@ $(document).ready(function() {
 	$("#myProfileButton").on("click", function() {
 
 		$.ajax({
-			type : "get",
+			type : "post",
 			url : "/baiduMap/login/getUser",
 			data : {id : $("#userName").data("id")},
 			cache : false,
@@ -78,7 +78,7 @@ $(document).ready(function() {
 			$("#errorMessageRegister").html("不好意思，用户名不能为空，请输入！").show();
 		} else {
 			$.ajax({
-				type : "get",
+				type : "post",
 				url : "/baiduMap/login/getUser",
 				cache : false,
 				data : {loginName: $("#registerName").val()},
@@ -111,7 +111,7 @@ $(document).ready(function() {
 	$("#registerLoginButton").click(function() {
 		var form = $(".form-register");
 		$.ajax({
-			type : "get",
+			type : "post",
 			url : "/baiduMap/login/addUser",
 			cache : false,
 			data : form.serialize(),
@@ -134,7 +134,7 @@ $(document).ready(function() {
 	$("#addUserButton").on("click", function() {
 		var form = $(".form-addUser");
 		$.ajax({
-			type : "get",
+			type : "post",
 			url : "/baiduMap/user/addUser",
 			cache : false,
 			data : form.serialize(),

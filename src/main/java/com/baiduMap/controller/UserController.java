@@ -31,7 +31,7 @@ public class UserController {
 		binder.setFieldDefaultPrefix("user.");    
     } 
 	@ResponseBody
-	@RequestMapping(value = "/getUserList", method = RequestMethod.GET)
+	@RequestMapping(value = "/getUserList", method = RequestMethod.POST)
 	public List<User> getUserList(@ModelAttribute User user) {
 		
 		try {
@@ -43,7 +43,7 @@ public class UserController {
 	}   
 
 	@ResponseBody
-	@RequestMapping(value = "/addUser", method = RequestMethod.GET)
+	@RequestMapping(value = "/addUser", method = RequestMethod.POST)
 	public void addUser(
 			HttpSession session,
 			@ModelAttribute User user) {
@@ -62,7 +62,7 @@ public class UserController {
 		}
 	} 
 	@ResponseBody
-	@RequestMapping(value = "/getUser", method = RequestMethod.GET)
+	@RequestMapping(value = "/getUser", method = RequestMethod.POST)
 	public User getUser(
 			@ModelAttribute User user) {
 		
@@ -76,7 +76,7 @@ public class UserController {
 	} 
 
 	@ResponseBody
-	@RequestMapping(value = "/updUser", method = RequestMethod.GET)
+	@RequestMapping(value = "/updUser", method = RequestMethod.POST)
 	public void UpdUser(@ModelAttribute User user) {
 		
 		try {
